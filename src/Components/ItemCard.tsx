@@ -1,4 +1,12 @@
-function ItemCard({ item }: ItemCardProps) {
+import type { ClothingProduct } from "../data/data";
+
+interface ItemCardProps {
+  item: ClothingProduct;
+  onIncrease: (id: number) => void;
+  onDecrease: (id: number) => void;
+}
+
+function ItemCard({ item, onIncrease, onDecrease }: ItemCardProps) {
   return (
     <div>
       <img src={item.image} alt={item.name} width="150" />
@@ -13,8 +21,29 @@ function ItemCard({ item }: ItemCardProps) {
       <p>Price: ${item.price.toFixed(2)}</p>
       <p>Remaining Stock: {item.quantity}</p>
 
-      {item.quality === 0 && <p>Out of Stock</p>}
+      {item.quantity === 0 ? (
+        <p>Out of Stock</p>
+      ) : (
+        <div>
+          <button
+            onClick={() => onDecrease(item.id)}
+            disabled={item.itemQuantity === 0}
+          >
+            -
+          </button>
+
+          <span> {item.itemQuantity} </span>
+
+          <button
+            onClick={() => onIncrease(item.id)}
+            disabled={item.itemQuantity >= item.quantity}
+          >
+            +
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
 export default ItemCard;
