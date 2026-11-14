@@ -8,6 +8,7 @@ interface ThriftHappensProps {
 
 function ThriftHappens({ data }: ThriftHappensProps) {
   const [items, setItems] = useState<ClothingProduct[]>(data);
+  const [cartItems, setCartItems] = useState<ClothingProduct[]>([]);
 
   const handleIncrease = (id: number) => {
     setItems((previousItems) =>
@@ -29,13 +30,56 @@ function ThriftHappens({ data }: ThriftHappensProps) {
     );
   };
 
+  const handleAddToCheckout = (id: number) => {
+    const selectedItem = items.find((item) => item.id === id);
+
+    if (
+      !selectedItem ||
+      selectedItem.itemQuantity <= 0 ||
+      selectedItem.itemQuantity > selectedItem.quantity
+    ) {
+      return;
+    }
+
+    setCartItems((previousCart) => {
+      const existingItem = previousCart.find((item) => item.id === id);
+
+      if (existingItem) {
+        return previousCart.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                itemQuantity: item.itemQuantity + selectedItem.itemQuantity,
+              }
+            : item,
+        );
+      }
+
+      return [...previousCart, { ...selectedItem }];
+    });
+
+    setItems((previousItems) =>
+      previousItems.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: item.quantity - selectedItem.itemQuantity,
+              itemQuantity: 0,
+            }
+          : item,
+      ),
+    );
+  };
+
   return (
     <div>
       <h2>Thrift Happens</h2>
+
       <ItemsContainer
         items={items}
         onIncrease={handleIncrease}
         onDecrease={handleDecrease}
+        onAddToCheckout={handleAddToCheckout}
       />
     </div>
   );

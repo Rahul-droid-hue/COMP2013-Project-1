@@ -5,12 +5,14 @@ interface ItemsContainerProps {
   items: ClothingProduct[];
   onIncrease: (id: number) => void;
   onDecrease: (id: number) => void;
+  onAddToCheckout: (id: number) => void;
 }
 
 function ItemsContainer({
   items,
   onIncrease,
   onDecrease,
+  onAddToCheckout,
 }: ItemsContainerProps) {
   return (
     <div>
@@ -20,6 +22,7 @@ function ItemsContainer({
           item={item}
           onIncrease={onIncrease}
           onDecrease={onDecrease}
+          onAddToCheckout={onAddToCheckout}
         />
       ))}
     </div>

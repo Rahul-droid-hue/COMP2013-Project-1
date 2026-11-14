@@ -4,9 +4,15 @@ interface ItemCardProps {
   item: ClothingProduct;
   onIncrease: (id: number) => void;
   onDecrease: (id: number) => void;
+  onAddToCheckout: (id: number) => void;
 }
 
-function ItemCard({ item, onIncrease, onDecrease }: ItemCardProps) {
+function ItemCard({
+  item,
+  onIncrease,
+  onDecrease,
+  onAddToCheckout,
+}: ItemCardProps) {
   return (
     <div>
       <img src={item.image} alt={item.name} width="150" />
@@ -42,6 +48,13 @@ function ItemCard({ item, onIncrease, onDecrease }: ItemCardProps) {
           </button>
         </div>
       )}
+
+      <button
+        onClick={() => onAddToCheckout(item.id)}
+        disabled={item.itemQuantity === 0 || item.quantity === 0}
+      >
+        Add to Checkout
+      </button>
     </div>
   );
 }
