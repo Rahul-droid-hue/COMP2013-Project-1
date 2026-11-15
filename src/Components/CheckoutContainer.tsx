@@ -18,7 +18,7 @@ function CheckoutContainer({
   );
 
   return (
-    <div>
+    <div id="mycart">
       <h2>Checkout</h2>
 
       {items.length === 0 ? (
